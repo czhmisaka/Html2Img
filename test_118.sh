@@ -1,0 +1,244 @@
+#!/bin/bash
+###
+ # @Date: 2025-05-08 00:18:41
+ # @LastEditors: CZH
+ # @LastEditTime: 2025-05-08 02:54:21
+ # @FilePath: /html生成图片/test_118.sh
+### 
+
+# HTML截图API测试脚本 - 118服务器测试
+# 默认参数
+PORT=15600
+OUTPUT_FILE="test_118_output.png"
+HTML_CONTENT='<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: '\''Segoe UI'\'', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            padding: 20px;
+        }
+
+        .title {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .system-architecture {
+            width: 900px;
+            height: 650px;
+            position: relative;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+            margin: 0 auto;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .layer-label {
+            position: absolute;
+            font-size: 14px;
+            font-weight: bold;
+            color: #495057;
+            transform: rotate(-90deg);
+            transform-origin: left top;
+            left: -15px;
+        }
+
+        .component {
+            position: absolute;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            font-size: 14px;
+            transition: all 0.3s ease;
+            width: 180px;
+        }
+
+        .component:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .component-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .component-desc {
+            font-size: 12px;
+            color: #495057;
+            line-height: 1.4;
+        }
+
+        .data-layer {
+            background: linear-gradient(135deg, #d0f4de 0%, #a9def9 100%);
+            border: 1px solid #a9def9;
+        }
+
+        .model-layer {
+            background: linear-gradient(135deg, #a9def9 0%, #e4c1f9 100%);
+            border: 1px solid #e4c1f9;
+        }
+
+        .infra-layer {
+            background: linear-gradient(135deg, #fcf6bd 0%, #f7b267 100%);
+            border: 1px solid #f7b267;
+        }
+
+        .app-layer {
+            background: linear-gradient(135deg, #ff99c8 0%, #f05d5e 100%);
+            border: 1px solid #f05d5e;
+        }
+
+        .connector {
+            position: absolute;
+            height: 2px;
+            background: #6c757d;
+            transform-origin: left center;
+            opacity: 0.7;
+        }
+
+        .arrow {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-left: 12px solid #6c757d;
+        }
+
+        .flow-label {
+            position: absolute;
+            font-size: 10px;
+            color: #6c757d;
+            background: white;
+            padding: 2px 5px;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="title">AI 系统架构图</h1>
+    <div class="system-architecture">
+        <!-- Layer Labels -->
+        <div class="layer-label" style="top: 120px;">数据层</div>
+        <div class="layer-label" style="top: 300px;">模型层</div>
+        <div class="layer-label" style="top: 480px;">基础设施</div>
+        <div class="layer-label" style="top: 660px;">应用层</div>
+
+        <!-- Data Layer -->
+        <div class="component data-layer" style="left: 80px; top: 120px;">
+            <div class="component-title">数据存储</div>
+            <div class="component-desc">分布式存储系统，包含结构化/非结构化数据</div>
+        </div>
+        <div class="component data-layer" style="left: 80px; top: 240px;">
+            <div class="component-title">数据处理</div>
+            <div class="component-desc">ETL流程、数据清洗和特征工程</div>
+        </div>
+
+        <!-- Model Layer -->
+        <div class="component model-layer" style="left: 320px; top: 80px;">
+            <div class="component-title">预训练</div>
+            <div class="component-desc">大规模基础模型训练，使用海量数据</div>
+        </div>
+        <div class="component model-layer" style="left: 320px; top: 200px;">
+            <div class="component-title">微调</div>
+            <div class="component-desc">领域适配和任务特定优化</div>
+        </div>
+        <div class="component model-layer" style="left: 320px; top: 320px;">
+            <div class="component-title">模型服务</div>
+            <div class="component-desc">模型版本管理和推理API</div>
+        </div>
+
+        <!-- Infrastructure -->
+        <div class="component infra-layer" style="left: 560px; top: 120px;">
+            <div class="component-title">训练集群</div>
+            <div class="component-desc">GPU/TPU集群，分布式训练框架</div>
+        </div>
+        <div class="component infra-layer" style="left: 560px; top: 240px;">
+            <div class="component-title">推理服务器</div>
+            <div class="component-desc">高性能模型服务，自动扩缩容</div>
+        </div>
+
+        <!-- Application Layer -->
+        <div class="component app-layer" style="left: 320px; top: 440px;">
+            <div class="component-title">API网关</div>
+            <div class="component-desc">统一接口、认证和流量控制</div>
+        </div>
+        <div class="component app-layer" style="left: 120px; top: 440px;">
+            <div class="component-title">监控系统</div>
+            <div class="component-desc">性能指标、日志和告警</div>
+        </div>
+        <div class="component app-layer" style="left: 520px; top: 440px;">
+            <div class="component-title">用户界面</div>
+            <div class="component-desc">Web应用和移动端集成</div>
+        </div>
+
+        <!-- Connectors -->
+        <div class="connector" style="left: 260px; top: 145px; width: 50px;"></div>
+        <div class="arrow" style="left: 310px; top: 140px;"></div>
+        <div class="flow-label" style="left: 280px; top: 120px;">数据流</div>
+
+        <div class="connector" style="left: 260px; top: 265px; width: 50px;"></div>
+        <div class="arrow" style="left: 310px; top: 260px;"></div>
+        <div class="flow-label" style="left: 280px; top: 240px;">特征流</div>
+
+        <div class="connector" style="left: 500px; top: 145px; width: 50px;"></div>
+        <div class="arrow" style="left: 550px; top: 140px;"></div>
+        <div class="flow-label" style="left: 520px; top: 120px;">训练</div>
+
+        <div class="connector" style="left: 500px; top: 265px; width: 50px;"></div>
+        <div class="arrow" style="left: 550px; top: 260px;"></div>
+        <div class="flow-label" style="left: 520px; top: 240px;">推理</div>
+
+        <div class="connector" style="left: 370px; top: 370px; width: 60px; transform: rotate(90deg);"></div>
+        <div class="arrow" style="left: 365px; top: 430px; transform: rotate(90deg);"></div>
+        <div class="flow-label" style="left: 380px; top: 400px;">API调用</div>
+
+        <!-- External Interactions -->
+        <div class="component" style="left: 80px; top: 30px; background: #e9ecef; border: 1px dashed #adb5bd;">
+            <div class="component-title">数据源</div>
+        </div>
+        <div class="connector" style="left: 130px; top: 60px; width: 30px; transform: rotate(90deg);"></div>
+        <div class="arrow" style="left: 125px; top: 90px; transform: rotate(90deg);"></div>
+
+        <div class="component" style="left: 520px; top: 30px; background: #e9ecef; border: 1px dashed #adb5bd;">
+            <div class="component-title">终端用户</div>
+        </div>
+        <div class="connector" style="left: 570px; top: 60px; width: 30px; transform: rotate(90deg);"></div>
+        <div class="arrow" style="left: 565px; top: 90px; transform: rotate(90deg);"></div>
+    </div>
+</body>
+
+</html>'
+
+echo "正在测试HTML截图API..."
+echo "服务器地址: 118.25.84.228:$PORT"
+echo "输出文件: $OUTPUT_FILE"
+
+response=$(curl -X POST http://118.25.84.228:$PORT/api/screenshot \
+  -H "Content-Type: application/json" \
+  -d "{\"html\":\"$HTML_CONTENT\",\"options\":{\"width\":800,\"height\":600,\"fullPage\":false}}" \
+  --output $OUTPUT_FILE --silent --write-out "%{http_code}")
+
+if [ $? -ne 0 ]; then
+  echo "错误: 请求失败"
+  exit 1
+fi
+
+if [ "$response" -eq 200 ]; then
+  echo "成功: 截图已保存到 $OUTPUT_FILE"
+else
+  echo "错误: API返回状态码 $response"
+  exit 1
+fi

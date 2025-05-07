@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-05-07 22:02:29
  * @LastEditors: CZH
- * @LastEditTime: 2025-05-08 00:00:30
+ * @LastEditTime: 2025-05-08 01:54:41
  * @FilePath: /html生成图片/html-to-image/utils/puppeteer.js
  */
 const puppeteer = require('puppeteer');
@@ -18,7 +18,7 @@ async function captureHTML(html, options = {}) {
     try {
         browser = await puppeteer.launch({
             headless: 'new',
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
+            args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
         });
 
         const page = await browser.newPage();
