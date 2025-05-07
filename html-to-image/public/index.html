@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML转图片工具</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            gap: 30px;
+            min-height: 80vh;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .editor {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .preview {
+            flex: 1;
+            position: relative;
+        }
+
+        textarea {
+            height: 100%;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-family: 'Fira Code', monospace;
+            resize: none;
+            font-size: 14px;
+            transition: border 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-1px);
+        }
+
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .preview {
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            background: white;
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+        }
+
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            z-index: 10;
+            display: none;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .preview img {
+            max-width: 100%;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .error {
+            color: #e74c3c;
+            padding: 12px;
+            background: #fdecea;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border-left: 4px solid #e74c3c;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="/docs"
+        style="position: fixed; top: 20px; right: 20px; padding: 10px 15px; background: #3498db; color: white; text-decoration: none; border-radius: 4px; font-weight: 500; transition: all 0.3s; z-index: 1000;">API文档</a>
+    <h1>HTML转图片工具</h1>
+    <div class="container">
+        <div class="editor">
+            <textarea id="htmlInput" placeholder="在此输入HTML代码..."></textarea>
+            <button id="generateBtn">
+                <span class="spinner" id="generateSpinner"></span>
+                生成图片
+            </button>
+        </div>
+        <div class="preview">
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="loading-spinner"></div>
+            </div>
+            <div id="errorMsg" class="error" style="display: none;"></div>
+            <img id="imagePreview" style="display: none;" />
+            <button id="downloadBtn" style="display: none; margin-top: 10px;">下载图片</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('generateBtn').addEventListener('click', async function () {
+            const btn = this;
+            const spinner = document.getElementById('generateSpinner');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+
+            btn.disabled = true;
+            spinner.style.display = 'block';
+            loadingOverlay.style.display = 'flex';
+            const html = document.getElementById('htmlInput').value;
+            const errorMsg = document.getElementById('errorMsg');
+            const imagePreview = document.getElementById('imagePreview');
+
+            errorMsg.style.display = 'none';
+            imagePreview.style.display = 'none';
+
+            if (!html) {
+                errorMsg.textContent = '请输入HTML内容';
+                errorMsg.style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/screenshot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ html })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || '生成图片失败');
+                }
+
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                imagePreview.src = url;
+                imagePreview.style.display = 'block';
+                document.getElementById('downloadBtn').style.display = 'block';
+            } catch (error) {
+                errorMsg.textContent = error.message;
+                errorMsg.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                spinner.style.display = 'none';
+                loadingOverlay.style.display = 'none';
+            }
+        });
+
+        document.getElementById('downloadBtn').addEventListener('click', () => {
+            const imagePreview = document.getElementById('imagePreview');
+            if (!imagePreview.src) return;
+
+            const link = document.createElement('a');
+            link.href = imagePreview.src;
+            link.download = 'generated-image.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    </script>
+</body>
+
+</html>
