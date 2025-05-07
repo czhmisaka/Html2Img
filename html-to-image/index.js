@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-05-07 22:03:27
  * @LastEditors: CZH
- * @LastEditTime: 2025-05-08 00:23:38
+ * @LastEditTime: 2025-05-08 03:36:24
  * @FilePath: /html生成图片/html-to-image/index.js
  */
 const express = require('express');
@@ -37,6 +37,7 @@ const swaggerSpec = swaggerJSDoc(swaggerOptions);
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
+app.use('/cache', express.static('cache'));
 
 // Swagger UI路由
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
