@@ -1,7 +1,7 @@
 <!--
  * @Date: 2025-05-08 09:23:02
  * @LastEditors: CZH
- * @LastEditTime: 2025-05-08 09:57:52
+ * @LastEditTime: 2025-05-08 10:02:38
  * @FilePath: /html生成图片/readMe.md
 -->
 
@@ -29,7 +29,7 @@
 ## 🛠️ 安装指南
 
 ### 前置要求
-- Node.js 14+
+- Node.js 22+
 - npm 6+
 - Puppeteer依赖的Chromium
 
