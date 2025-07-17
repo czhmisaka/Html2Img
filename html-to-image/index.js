@@ -1,7 +1,7 @@
 /*
  * @Date: 2025-05-07 22:03:27
  * @LastEditors: CZH
- * @LastEditTime: 2025-05-08 03:36:24
+ * @LastEditTime: 2025-05-08 11:03:27
  * @FilePath: /html生成图片/html-to-image/index.js
  */
 const express = require('express');
@@ -35,7 +35,7 @@ const swaggerSpec = swaggerJSDoc(swaggerOptions);
 
 // 中间件
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 app.use(express.static('public'));
 app.use('/cache', express.static('cache'));
 

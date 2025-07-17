@@ -1,11 +1,13 @@
 /*
  * @Date: 2025-05-07 22:02:56
  * @LastEditors: CZH
- * @LastEditTime: 2025-05-08 03:47:25
+ * @LastEditTime: 2025-05-08 10:49:19
  * @FilePath: /html生成图片/html-to-image/routes/api.js
  */
 const express = require('express');
 const router = express.Router();
+router.use(express.json({ limit: '50mb' }));
+router.use(express.urlencoded({ limit: '50mb', extended: true }));
 const sanitizeHTML = require('../utils/sanitize');
 const captureHTML = require('../utils/puppeteer');
 const cache = require('../utils/cache');
