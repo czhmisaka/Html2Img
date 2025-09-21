@@ -28,6 +28,18 @@
 
 ## 🛠️ 安装指南
 
+## 🌊 docker一键部署脚本
+国内服务器
+```bash
+bash <(curl -sSL https://raw.githubusercontent.com/czhmisaka/Html2Img/main/install.sh)
+```
+
+国外服务器
+```bash
+bash <(curl -sSL https://fastly.jsdelivr.net/gh/czhmisaka/Html2Img/install.sh)
+```
+
+## ⌛ 手动安装步骤
 ### 前置要求
 - Node.js 22+
 - npm 6+
@@ -63,19 +75,7 @@
    ```bash
    fc-list :lang=zh
    ```
-   
-### docker一键部署脚本
-国内服务器
-```bash
-bash <(curl -sSL https://raw.githubusercontent.com/czhmisaka/Html2Img/main/install.sh)
-```
 
-国外服务器
-```bash
-bash <(curl -sSL https://fastly.jsdelivr.net/gh/czhmisaka/Html2Img/install.sh)
-```
-
-### 手动安装步骤
 1. 克隆仓库：
 ```bash
 git clone https://github.com/czhmisaka/Html2Img.git
@@ -93,6 +93,8 @@ npm start
 ```
 
 服务默认运行在: [http://localhost:15600](http://localhost:15600)
+
+
 
 ## 📚 API文档
 

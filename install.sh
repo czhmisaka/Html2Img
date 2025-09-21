@@ -52,7 +52,7 @@ build() {
     
     local image_name="$1"
     local build_path="$2"
-    local base_image="swr.cn-north-4.myhuaweicloud.com/renniliu/html2image:0.0.1"
+    local base_image="swr.ap-southeast-1.myhuaweicloud.com/renniliu/html2img:1.0.1"
     
     log_info "开始构建容器: $image_name"
     
@@ -77,7 +77,13 @@ build() {
     
     # 运行容器
     log_info "正在创建并运行容器: $image_name"
-    docker run -d -p 15600:15600 -e TZ=Asia/Shanghai --name "$image_name" "$base_image"
+    docker run -d \
+    -p 15600:15600 \
+    -e TZ=Asia/Shanghai \
+    --memory 512m \
+    --memory-swap 1g \
+    --name "$image_name" \
+    "$image_name"
     check_status "创建容器"
     
     log_info "容器 $image_name 已成功运行在端口 15600"
