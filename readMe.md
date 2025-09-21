@@ -31,12 +31,12 @@
 ## 🌊 docker一键部署脚本
 国内服务器
 ```bash
-bash <(curl -sSL https://raw.githubusercontent.com/czhmisaka/Html2Img/main/install.sh)
+bash <(curl -sSL https://fastly.jsdelivr.net/gh/czhmisaka/Html2Img/install.sh)
 ```
 
 国外服务器
 ```bash
-bash <(curl -sSL https://fastly.jsdelivr.net/gh/czhmisaka/Html2Img/install.sh)
+bash <(curl -sSL https://raw.githubusercontent.com/czhmisaka/Html2Img/main/install.sh)
 ```
 
 ## ⌛ 手动安装步骤
