@@ -39,6 +39,14 @@ bash <(curl -sSL https://fastly.jsdelivr.net/gh/czhmisaka/Html2Img/install.sh)
 bash <(curl -sSL https://raw.githubusercontent.com/czhmisaka/Html2Img/main/install.sh)
 ```
 
+```
+使用示例
+运行
+bash install.sh build html2img .
+停止删除
+bash install.sh delete -f  html2img
+```
+
 ## ⌛ 手动安装步骤
 ### 前置要求
 - Node.js 22+
