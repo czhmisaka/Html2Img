@@ -42,9 +42,9 @@ bash <(curl -sSL https://raw.githubusercontent.com/czhmisaka/Html2Img/main/insta
 ```
 使用示例
 运行
-bash install.sh build html2img .
+bash install.sh build
 停止删除
-bash install.sh delete -f  html2img
+bash install.sh delete html2img
 ```
 
 ## ⌛ 手动安装步骤
